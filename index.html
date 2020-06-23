@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code-Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id='banner' class='banner'>THE QUIZER</div>
+
+    <div id='start-button' class='start-button'>Start the Quiz</div>
+
+    <article class='question-body' id='question-body'>
+        <div class='question-number' id='question-number'>1</div>
+        <div id='question-div' class='stretch-center'></div>
+        <div id='options-div' class='stretch-center'></div>
+        <div class='score-box'>
+            Current Score: <span id='score'>0</span>
+        </div>
+        <div id='count-down' class='count-down'>6</div>
+        <div class='display-answer correct-display' id='correct-display'>Correct</div>
+        <div class='display-answer incorrect-display' id='incorrect-display'>Incorrect</div>
+    </article>
+
+    <div id='final-score' class='final-score'>
+        <p class='score-title'>Your Final Score:&nbsp;<span id='final-score-value' class='final-score-value'> &nbsp; 0000</span></p>
+        <p>If you'd like to save this score, please enter your initials here:</p>
+        <form><input type='text'  maxlength="3" id='initials'></input><br>
+            <button class='form-button save' id='save-button'>Save My Score</button>
+            <button class='form-button' id='dont-save-button'>Don't Save My Score</button>
+            <button class='form-button' id='high-score-button'>View Existing High Scores</button>
+        </form>
+       
+    </div>
+
+    <div id='high-scores-display' class='high-scores-display'>
+        <p  class='score-title'>High Scores</p>
+        <div class='initials-header'>Player</div><div class='scores-header'>Score</div>
+        <div id='high-scores-list' class='high-scores-list'>
+
+        </div>
+        <button class='form-button save' id='play-again-button'>Play Again</button>
+    </div>
+    
+</body>
+<script src="./script.js"></script>
+</html>
