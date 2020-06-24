@@ -8,18 +8,19 @@
 </head>
 <body>
     <div id='banner' class='banner'>THE QUIZLER</div>
-
+    <div class='score-box'>
+        Current Score: <span id='score'>0</span>
+    </div>
+    <div id='time-remaining' class='time-remaining'>Time remaining:</div>
+    <div id='count-down' class='count-down'>&nbsp;</div>
     <div id='start-button' class='start-button'>Start the Quiz</div>
 
     <article class='question-body' id='question-body'>
         <div class='question-number' id='question-number'>1</div>
         <div id='question-div' class='stretch-center'></div>
         <div id='options-div' class='stretch-center'></div>
-        <div class='score-box'>
-            Current Score: <span id='score'>0</span>
-        </div>
-        <div id='time-remaining' class='time-remaining'>Time remaining:</div>
-        <div id='count-down' class='count-down'>&nbsp;</div>
+
+        
         <div class='display-answer correct-display' id='correct-display'>Correct</div>
         <div class='display-answer incorrect-display' id='incorrect-display'>Incorrect</div>
     </article>

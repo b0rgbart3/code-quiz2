@@ -3,7 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700;800&display=swap");
 body {
   background-color: #dddddd;
-  color: #444444; }
+  color: #444444;
+  margin: 0;
+  padding: 0; }
 
 .start-button {
   background-color: white;
@@ -50,7 +52,7 @@ body {
   margin: auto;
   border-radius: 8px;
   box-shadow: 0 0 8px gray;
-  width: 100%;
+  width: 90%;
   max-width: 740px;
   margin-top: 80px;
   padding-bottom: 40px;
@@ -58,7 +60,8 @@ body {
   transition: all 2s;
   opacity: 1;
   display: none;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  max-width: 800px; }
 
 .question-number {
   position: relative;
@@ -118,7 +121,8 @@ body {
   font-size: 1em;
   letter-spacing: .09em;
   cursor: pointer;
-  user-select: none; }
+  user-select: none;
+  max-width: 85%; }
 
 .option:hover {
   background-color: #3966da;
@@ -137,9 +141,6 @@ button:focus {
   outline: none; }
 
 .banner {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 50px;
   background-color: #aaaaaa;
   width: 100%;
@@ -153,19 +154,15 @@ button:focus {
   font-family: Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   color: black;
-  padding: 14px;
-  position: fixed;
-  top: 0;
-  right: 200px; }
+  padding: 14px; }
 
 .time-remaining {
+  display: inline-block;
+  float: left;
   font-family: Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   color: white;
   padding: 14px;
-  position: fixed;
-  top: 0;
-  right: 250px;
   color: black; }
 
 .form-button {
@@ -215,10 +212,12 @@ button:focus {
   text-transform: uppercase;
   color: white;
   padding: 14px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 22px; }
+  height: 122px;
+  width: 40%;
+  height: 40px;
+  margin-bottom: 20px;
+  display: inline-block;
+  float: right; }
 
 .display-answer {
   font-family: 'Inconsolata', monospace;
@@ -352,6 +351,18 @@ input:active {
   background-color: #c6ffc6; }
 
 @media screen and (min-width: 640px) {
+  .score-box {
+    background-color: #569c56;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    color: white;
+    padding: 14px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 22px;
+    width: 200px; }
+
   .question-title {
     font-family: 'Volkhov', serif;
     margin-top: 20px;
@@ -369,6 +380,14 @@ input:active {
 
   .final-score {
     width: 80%; }
+
+  .time-remaining {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    color: white;
+    padding: 14px;
+    position: relative;
+    color: black; }
 
   .question-number {
     position: relative;

@@ -32,8 +32,9 @@ THEN I can save my initials and score
 3.  The user is given the option to save their score, with their initials, so their score can be compred against others.
 4.  Keeps track of the users current and final score
 5.  Displays high scores with player initials in a list
-6.  Allows user to play again.
-7.  As per acceptance criteria:
+6.  Stores a list of highscores in local storage (data persistence)
+7.  Allows user to play again.
+8.  As per acceptance criteria:
     when the user gets a wrong answer, we reduce the
     time they have left
 
