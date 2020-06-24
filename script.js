@@ -58,10 +58,12 @@ var startButton =       document.getElementById("start-button");
 var questionBody =      document.getElementById("question-body");
 var questionDiv =       document.getElementById("question-div");
 var optionsDiv =        document.getElementById("options-div");
+var timeRemaining =    document.getElementById("time-remaining");
 var countDownDisplay =  document.getElementById("count-down");
 var correctDisplay =    document.getElementById("correct-display");
 var incorrectDisplay =  document.getElementById("incorrect-display");
 var scoreDisplay =      document.getElementById("score");
+var scoreBox =          document.getElementById("score-box");
 var finalScoreDisplay = document.getElementById("final-score");
 var finalScore =        document.getElementById("final-score-value");
 
@@ -93,6 +95,7 @@ var restart = function(event) {
         finalScoreDisplay.style.display = "none";
     }
     startButton.style.display = "block";
+    scoreBox.style.display = "none";
 }
 
 var startQuiz = function() {
@@ -113,6 +116,9 @@ var startQuiz = function() {
     // Display the first question to the uesr.
     questionNumber = 0;
     score = 0;
+    timeRemaining.style.display="block";
+    countDownDisplay.style.display="block";
+    scoreBox.style.display = "none";
     displayQuestion();
 }
 
@@ -183,6 +189,7 @@ var displayQuestionOptions = function() {
         optionsDiv.removeChild(optionsDiv.firstChild);
      }
 
+   
     questions[questionNumber].options.forEach( function (option, index) {
         var thisOption = document.createElement("p");
         thisOption.textContent = option;
@@ -191,15 +198,18 @@ var displayQuestionOptions = function() {
         thisOption.onclick=handleOption;
         optionsDiv.append(thisOption);
     });
+    optionsDiv.style.display="block";
 }
 
 var displayCorrectness = function() {
+    optionsDiv.style.display="none";
     correctDisplay.style.display="block";
     updateDisplay();
     pause = setTimeout( nextQuestion, pauseAmount * 1000);
 }
 
 var displayInCorrectness = function() {
+    optionsDiv.style.display="none";
     incorrectDisplay.style.display="block";
     updateDisplay();
     pause = setTimeout( nextQuestion, pauseAmount  * 1000);
@@ -208,6 +218,7 @@ var displayInCorrectness = function() {
 
 
 var nextQuestion = function () {
+    scoreBox.style.display = "inline-block";
     clearTimeout(pause);
      // give the user back the time that was taken while we paused to
      // display "correct" or "incorrect"
@@ -242,6 +253,8 @@ var endQuiz = function() {
 
 
 var displayFinalScore = function() {
+    countDownDisplay.style.display="none";
+    timeRemaining.style.display="none";
     finalScore.textContent = score;
     initialsInput.value = "";
     finalScoreDisplay.style.display = "block";

@@ -251,9 +251,9 @@ button:focus {
     width:40%;
     height:40px;
     margin-bottom:20px;
-    display:inline-block;
+    display:none;
     float:right;
-
+    
 }
 
 .display-answer {
@@ -272,11 +272,15 @@ button:focus {
 
 }
 .correct-display {
-    background-color:green;
+    background-color:rgba(0, 128, 0,1);
+    height:100px;
+    margin-top:110px;
 }
 
 .incorrect-display {
-    background-color:red;
+    background-color:rgba(255, 0, 0,1);
+    height:100px;
+    margin-top:110px;
 }
 
 .final-score {
@@ -451,7 +455,7 @@ input:active {
         color: white;
         padding: 14px;
         position: relative;
-
+        display:none;
         color:black;
        }
 

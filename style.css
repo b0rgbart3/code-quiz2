@@ -216,7 +216,7 @@ button:focus {
   width: 40%;
   height: 40px;
   margin-bottom: 20px;
-  display: inline-block;
+  display: none;
   float: right; }
 
 .display-answer {
@@ -234,10 +234,14 @@ button:focus {
   font-size: 2em; }
 
 .correct-display {
-  background-color: green; }
+  background-color: green;
+  height: 100px;
+  margin-top: 110px; }
 
 .incorrect-display {
-  background-color: red; }
+  background-color: red;
+  height: 100px;
+  margin-top: 110px; }
 
 .final-score {
   background-color: white;
@@ -387,6 +391,7 @@ input:active {
     color: white;
     padding: 14px;
     position: relative;
+    display: none;
     color: black; }
 
   .question-number {
