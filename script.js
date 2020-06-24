@@ -58,9 +58,14 @@ var incorrectDisplay =  document.getElementById("incorrect-display");
 var scoreDisplay =      document.getElementById("score");
 var finalScoreDisplay = document.getElementById("final-score");
 var finalScore =        document.getElementById("final-score-value");
+
 var saveButton =        document.getElementById("save-button");
 var dontSaveButton =    document.getElementById("dont-save-button");
 var initialsInput =     document.getElementById("initials");
+var highScoresButton =  document.getElementById("high-score-button");
+var highScoresDisplay = document.getElementById("high-scores-display");
+var highScoresList =    document.getElementById("high-scores-list");
+var playAgainButton =   document.getElementById("play-again-button");
 // Pseudo code:                             //
 // Start the timer countdown
 // display a question
@@ -72,6 +77,9 @@ var initialsInput =     document.getElementById("initials");
 
 var restart = function(event) {
     event.preventDefault();
+    if (highScoresDisplay) {
+        highScoresDisplay.style.display = "none";
+    }
     if (finalScoreDisplay) {
         finalScoreDisplay.style.display = "none";
     }
@@ -226,9 +234,11 @@ var endQuiz = function() {
 
 var displayFinalScore = function() {
     finalScore.textContent = score;
+    initialsInput.value = "";
     finalScoreDisplay.style.display = "block";
-    saveButton.onclick=saveScore;
-    dontSaveButton.onclick=restart;
+    saveButton.onclick =        saveScore;
+    dontSaveButton.onclick =    restart;
+    highScoresButton.onclick =  displayHighScores;
 }
 
 
@@ -242,6 +252,51 @@ var saveScore = function(event) {
 
       //store a stringified version of our entire high-scores object into LocalStorage
       localStorage.setItem("quiz-high-scores", JSON.stringify(highScores));
+
+      displayHighScores();
     }
     
 }
+
+var displayHighScores = function(event) {
+    // this function gets called from 2 different places
+    // so we need to check if it was sent an event or not
+    if (event) { event.preventDefault(); }
+
+    finalScoreDisplay.style.display = "none";
+
+    if (highScores.length > 0) {
+
+        while(highScoresList.firstChild) {
+            highScoresList.firstChild.remove();
+        }
+
+        highScores.sort((a, b) => (a.score < b.score) ? 1 : -1)
+
+        highScores.forEach( function(element,index) {
+    
+            var entryInitials = document.createElement('p');
+            entryInitials.classList.add("initials-element");
+            if (index == 0) {
+                entryInitials.classList.add("initials-element-winner");
+            }
+            entryInitials.textContent = element["initials"];
+            highScoresList.appendChild(entryInitials);
+            var entryScore = document.createElement('p');
+            entryScore.classList.add("scores-element");
+            if (index == 0) {
+                entryScore.classList.add("initials-element-winner");
+            }
+            entryScore.textContent = element.score;
+            highScoresList.appendChild(entryScore);
+            
+        } );
+
+        playAgainButton.onclick=restart;
+        highScoresDisplay.style.display = "block";
+    } else {
+        restart();
+    }
+
+}
+
