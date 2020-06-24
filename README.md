@@ -1,7 +1,7 @@
 # code-quiz
 This application displays a series of questions to quiz the user on their knowledge of Javascript.
 
-<a href='https://b0rgbart3.github.io/code-quiz/'>Live Demo</a>
+<a href='https://b0rgbart3.github.io/code-quiz2/'>Live Demo</a>
 ## User Story
 
 ```
