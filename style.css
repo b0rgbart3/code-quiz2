@@ -217,7 +217,8 @@ button:focus {
   padding: 14px;
   position: fixed;
   top: 0;
-  right: 0; }
+  right: 0;
+  height: 22px; }
 
 .display-answer {
   font-family: 'Inconsolata', monospace;

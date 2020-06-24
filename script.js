@@ -12,7 +12,13 @@ var correctAudio = new Audio('correct.mp3');
 var incorrectAudio = new Audio('incorrect.mp3');
 var highScores = [];
 
-var locallyStoredHighScores = JSON.parse( localStorage.getItem("quiz-high-scores") );
+var highScoresString = localStorage.getItem("quiz-high-scores");
+
+var locallyStoredHighScores;
+
+if (highScoresString) {
+    locallyStoredHighScores = JSON.parse( highScoresString );
+}
 
 if (locallyStoredHighScores) {
   highScores = locallyStoredHighScores; 
@@ -66,6 +72,7 @@ var highScoresButton =  document.getElementById("high-score-button");
 var highScoresDisplay = document.getElementById("high-scores-display");
 var highScoresList =    document.getElementById("high-scores-list");
 var playAgainButton =   document.getElementById("play-again-button");
+var clearHighScoresButton= document.getElementById("clear-high-scores");
 // Pseudo code:                             //
 // Start the timer countdown
 // display a question
@@ -75,8 +82,10 @@ var playAgainButton =   document.getElementById("play-again-button");
 // and display the final score
 // then ask for initials and display the high-score list
 
+// this function gets called from multiple places, so we need to
+// first check to see if we got sent an event object or not
 var restart = function(event) {
-    event.preventDefault();
+    if (event) { event.preventDefault(); }
     if (highScoresDisplay) {
         highScoresDisplay.style.display = "none";
     }
@@ -293,6 +302,7 @@ var displayHighScores = function(event) {
         } );
 
         playAgainButton.onclick=restart;
+        clearHighScoresButton.onclick=clearHighScores;
         highScoresDisplay.style.display = "block";
     } else {
         restart();
@@ -300,3 +310,8 @@ var displayHighScores = function(event) {
 
 }
 
+var clearHighScores = function() {
+    highScores = [];
+    localStorage.setItem("quiz-high-scores", "");
+    restart();
+}
