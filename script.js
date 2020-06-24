@@ -1,10 +1,10 @@
-
 //   Javascript code written by Bat Dority
 
 // Global Settings
-const delay = 6;  // seconds allotted for each question
-const pause = .3;  // seconds to pause after displaying the answer
-
+var timer;  // this is the main timer 
+var pause; // temporary pause while we display right or wrong 
+var pauseAmount = 1;  // seconds to pause after displaying the answer
+var questionNumber;
 var correctAudio = new Audio('correct.mp3');
 var incorrectAudio = new Audio('incorrect.mp3');
 correctAudio.volume = .2;
@@ -16,9 +16,9 @@ incorrectAudio.volume = .2;
 //   question:  a string
 //   options:  an array of strings
 //   correct:  an index into the array of options, for the correct answer
-//   points:  a point value to score this question based on
-//            it's difficulty level
-const javascriptQuestions = [
+//   points:  a point value to score this question based on it's difficulty level
+
+const questions = [
     { question: "Commonly used datatypes in JavaScript DO NOT include:",
      options: ["strings","booleans","alerts","numbers"],
      correct: 2,
@@ -35,292 +35,174 @@ const javascriptQuestions = [
     points: 4
     },
 ];
+var timeAllotted = questions.length * 6;  // seconds allotted for entire quiz
 
-var questionSet = [javascriptQuestions];
-var questionNumber;
+// Set pointers to the DOM elements
+var startButton = document.getElementById("start-button");
+var questionBody = document.getElementById("question-body");
+var questionDiv = document.getElementById("question-div");
+var optionsDiv = document.getElementById("options-div");
+var countDownDisplay = document.getElementById("count-down");
+var correctDisplay = document.getElementById("correct-display");
+var incorrectDisplay = document.getElementById("incorrect-display");
+var scoreDisplay = document.getElementById("score");
+var finalScoreDisplay = document.getElementById("final-score");
+var finalScore = document.getElementById("final-score-value");
+// Pseudo code:
+// Start the timer countdown
+// display a question
+// update the visual display of the timer
+// respond to user response, and keep track of their score
+// if user answer all questions / or timer runs out, end the quiz,
+// and display the final score
+// then ask for initials and display the high-score list
 
-// keep an array of objects that documents the users responses
-var answeredQuestions = [];  
+var quizTimer; 
+var countDown;
 
-
-// Present the question to the user, with buttons for each option
-// when the user selects an option, determine if it was correct,
-// then let them know if they got it right or not, and keep track of their score
-// At the end of the questions, present the user with their score and ask
-// for their initials, and store their initials and score in the highScores array
-
-var chosenSetIndex = 0;
-var questions = questionSet[chosenSetIndex];
-var questionTimer;
-var score;
-
-var gameOver;
-var paused;
-var totalPoints;
-var highScores = [];
-
-var correctDisplayText = document.getElementById('correct-display');
-var incorrectDisplayText = document.getElementById('incorrect-display');
-var startButton = document.getElementById('start-button');
-var questionBody = document.getElementById('question-body');
-var scoreDisplayText = document.getElementById('score');
-var finalScoreDisplay = document.getElementById('final-score');
-var finalScoreValue = document.getElementById('final-score-value');
-var highScoresDisplay = document.getElementById('high-scores-display');
-var highScoresList = document.getElementById('high-scores-list');
-var countDown = document.getElementById('count-down');
-
-
-var initialsInput = document.getElementById('initials');
-var saveButton = document.getElementById('save-button')
-var dontSaveButton = document.getElementById('dont-save-button');
-var highScoreButton = document.getElementById('high-score-button');
-var playAgainButton = document.getElementById('play-again-button');
-
-
-var init = function() {
-     questionNumber = 0;
-     score = 0;
-
-     scoreDisplayText.textContent = score;
-     gameOver = false;
-     paused = false;
-     totalPoints = 0;
-}
-
-init();
-
-startButton.onclick=function() {
-
-    startButton.style.display = "none";
-    questionBody.style.display = "block";
-
-    // Let the Quiz Begin!
-    startQuiz();
-};
-
-playAgainButton.onclick = function() {
-    highScoresDisplay.style.display = "none";
-    questionBody.style.display = "block";
+var startQuiz = function() {
+    timer = timeAllotted;
+    countDownDisplay.textContent = timer;
     
-    // Let the Quiz Begin!
-    startQuiz();
+    // update the display every second
+    countDown = setInterval(countDown, 1000);
+
+    // this is the main quizTimer 
+    quizTimer = setTimeout( endQuiz, timeAllotted * 1000);
+
+    // remove the Start Button from the display
+    startButton.style.display= "none";
+    // reveal the Question Body on the page
+    questionBody.style.display="block";
+
+    // Display the first question to the uesr.
+    questionNumber = 0;
+    score = 0;
+    displayQuestion();
 }
 
-saveButton.onclick=function(event) {
-    event.preventDefault();
-    var userInitials = initialsInput.value.toUpperCase();
-    if (userInitials.length > 1) {
-        console.log('Save Score for: ' + userInitials + ", score: " + score);
-        var highScoreObject = {"initials": userInitials, "score": score};
-        highScores.push(highScoreObject);
-        console.log(highScores);
-        displayHighScores();
-    }
-};
+// Don't start the quiz until the user hits the start button
+startButton.onclick = startQuiz;
 
-dontSaveButton.onclick=function(event) {
-    event.preventDefault();
-    restart();
-}
-var restart= function() {
-    finalScoreDisplay.style.display = "none";
-    questionBody.style.display = "block";
-    init();
-    startQuiz();
-}
-
-highScoreButton.onclick=function(event) {
-    event.preventDefault();
-    displayHighScores();
-}
-
-var displayQuestionBody = function() {
-    displayQuestion(questions[questionNumber]);
-    displayOptions(questions[questionNumber]);
-}
-
-var displayHighScores = function() {
-    if (highScores.length > 0) {
-            finalScoreDisplay.style.display = "none";
-
-            while(highScoresList.firstChild) {
-                highScoresList.firstChild.remove();
-            }
-
-            highScores.sort((a, b) => (a.score < b.score) ? 1 : -1)
-
-            highScores.forEach( function(element,index) {
-            console.log("High score: " + element["initials"] + ", " + element.score);
-            var entryInitials = document.createElement('p');
-            entryInitials.classList.add("initials-element");
-            if (index == 0) {
-                entryInitials.classList.add("initials-element-winner");
-            }
-            entryInitials.textContent = element["initials"];
-            highScoresList.appendChild(entryInitials);
-            var entryScore = document.createElement('p');
-            entryScore.classList.add("scores-element");
-            if (index == 0) {
-                entryScore.classList.add("initials-element-winner");
-            }
-            entryScore.textContent = element.score;
-            highScoresList.appendChild(entryScore);
-        });
-
-        highScoresDisplay.style.display = "block";
-    } else {
-        restart();
-    }
-}
-var displayQuestion = function(question) {
-
-    // Display the Title Text of the Question
-    var questionDiv = document.getElementById('question-div');
-    var questionTitle = document.createElement('p');
-    questionTitle.classList.add("question-title");
-    var questionNumberDisplayText = document.getElementById('question-number');
-    // Title--------------
-    questionTitle.textContent = question.question;
-
-    // If there is already a title nodes, let's start by removing it
-    if (questionDiv.firstChild) { questionDiv.firstChild.remove(); }
-    questionDiv.appendChild(questionTitle);
-
-    // Display the first question as 1, instead of 0
-    questionNumberDisplayText.textContent = questionNumber+1;  
-    
-}
-
-var displayOptions = function(question) {
-      var optionsDiv = document.getElementById('options-div');
-      // If there are already child nodes, let's start by removing them
-      while( optionsDiv.firstChild ) { optionsDiv.firstChild.remove(); }
-
-      var questionButtons = [];
-      question.options.forEach( function(option, index) {
-          questionButtons[index] = document.createElement('button');
-          questionButtons[index].classList.add('option');
-          questionButtons[index].textContent = option;
-
-          // Button On-Click Event Handler
-          questionButtons[index].onclick= function(event) {
-              
-            // only respond to buttons if the question hasn't already been answerd.
-            if (!paused) {
-              if (event.target.textContent === question.options[question.correct]) {
-                  handleCorrectAnswer();
-              } else {
-                  handleIncorrectAnswer();
-              }
-            }
-          };
-          optionsDiv.appendChild(questionButtons[index]);
+var displayQuestion = function() {
   
-      });
+    displayQuestionTitle();
+    displayQuestionOptions();
+}
+
+var countDown = function() {
+    timer--;
+    updateDisplay();
 }
 
 
-var nextQuestion = function() {
-    questionNumber++;
+var displayQuestionTitle = function() {
+    var qtitle= document.createElement("p");
+    var questionTitle = questions[questionNumber].question;
+    qtitle.setAttribute("class", "question-title");
+    qtitle.textContent = questionTitle;
+
+    // empty out the previous question's title
+    if (questionDiv.hasChildNodes()) {
+        questionDiv.removeChild(questionDiv.firstChild);
+     }
+    questionDiv.append(qtitle);
+}
+
+var endQuiz = function() {
     
-    if (questionNumber < questions.length) {
-        displayQuestionBody();
-        startTimer();
+
+    clearTimeout(quizTimer);
+    clearInterval(countDown);
+    console.log("ended.");
+
+    questionBody.style.display = "none";
+    displayFinalScore();
+}
+
+var displayFinalScore = function() {
+    finalScore.textContent = score;
+    finalScoreDisplay.style.display = "block";
+
+}
+
+var handleOption = function(event) {
+    var userChoice = event.target.getAttribute('data-choice');
+    
+    // comparing a string to an int here - thats why I'm using the double equals
+    if (userChoice == questions[questionNumber].correct) {
+        handleCorrectChoice();
+    }  else {
+        handleIncorrectChoice();
+    }
+}
+
+var handleCorrectChoice = function() {
+    correctAudio.play();
+    score = score + questions[questionNumber].points;
+    displayCorrectness();
+}
+
+var handleIncorrectChoice = function() {
+    // As per the acceptance criteria, we are reducing the overall time left
+    // when the user gets a wrong answer.
+    // This seems like adding insult to injury to me personally
+    timer = timer -1; 
+    incorrectAudio.play();
+    displayInCorrectness();
+   
+    
+}
+var displayQuestionOptions = function() {
+    
+    // empty out the previous question's options
+    while (optionsDiv.hasChildNodes()) {
+        optionsDiv.removeChild(optionsDiv.firstChild);
+     }
+
+    questions[questionNumber].options.forEach( function (option, index) {
+        var thisOption = document.createElement("p");
+        thisOption.textContent = option;
+        thisOption.setAttribute("class", "option");
+        thisOption.setAttribute("data-choice", index);
+        thisOption.onclick=handleOption;
+        optionsDiv.append(thisOption);
+    });
+}
+
+var displayCorrectness = function() {
+    correctDisplay.style.display="block";
+    updateDisplay();
+    pause = setTimeout( nextQuestion, pauseAmount * 1000);
+}
+
+var displayInCorrectness = function() {
+    incorrectDisplay.style.display="block";
+    updateDisplay();
+    pause = setTimeout( nextQuestion, pauseAmount  * 1000);
+}
+
+
+
+var nextQuestion = function () {
+    clearTimeout(pause);
+     // give the user back the time that was taken while we paused to
+     // display "correct" or "incorrect"
+    timer += pauseAmount;   
+    correctDisplay.style.display="none";
+    incorrectDisplay.style.display="none";
+    questionNumber++;
+    if ((questionNumber < questions.length) || (timer <= 0)) {
+        displayQuestion();
     } else {
         endQuiz();
     }
-}
-
-
-var startTimer=function() {
-    paused = false;
-    seconds = delay;
-    questionTimer = setInterval( function() {
-        seconds--;
-        
-            if ( seconds < 1 ) {
-                clearInterval(questionTimer);
-                countDown.textContent = delay;
-                if (!paused) {
-                    incorrectAudio.play();
-                    nextQuestion();
-                }
-            } else {
-                countDown.textContent = seconds;
-            }
-    } , 1000);
-
-}
-
-// startQuiz - start things off
-var startQuiz = function() {
-    init();
-    // Kick off the first question
-    questionNumber = 0;
-    displayQuestionBody();
-    startTimer();
-}
-
-// handleCorrectAnswer - let the user know they got this answer right
-var handleCorrectAnswer = function() {
-    var answerObject = { questionNumber: questionNumber, correct: true, value: questions[questionNumber].points };
-    paused = true;
-    answeredQuestions.push ( answerObject );
-    score = score + questions[questionNumber].points;
-    //totalPoints = totalPoints + questions[questionNumber].points;
     
-    scoreDisplayText.textContent = score;
-    correctDisplayText.style.display = "block";
-
-    correctAudio.play();
-    displayAnswer();
-};
-
-// handleCorrectAnswer - let the user know they got this answer wrong
-var handleIncorrectAnswer = function() {
-    var answerObject = { questionNumber: questionNumber, correct: false, value: questions[questionNumber].points };
-    paused = true;
-    answeredQuestions.push ( answerObject );
-    scoreDisplayText.textContent = score;
-   // totalPoints = totalPoints + questions[questionNumber].points;
-    incorrectDisplayText.style.display = "block";
-    incorrectAudio.play();
-    displayAnswer();
-};
-
-// displayAnswer - respond to the users choice 
-var displayAnswer = function() {
-       // Here, we set a new timer to pause the program flow so the 
-       // user can see the response of: Correct!  or Incorrect!
-       
-        // Clear the main delay timer
-        clearTimeout(questionTimer);
-
-        // Create new timer for the pause
-        var waitTimeout= setTimeout(endPause, 1000 * pause);
 }
 
-// endPause - callback function when the pause timer is done
-var endPause = function() {     
-    paused = false;
-    correctDisplayText.style.display = "none";
-    incorrectDisplayText.style.display = "none";
-    nextQuestion();
+var updateDisplay = function() {
+    countDownDisplay.textContent = timer;  
+    scoreDisplay.textContent = score;
+    console.log(timer);
 }
 
-// endQuiz - we've displayed all the quesitons, and run out of time
-// so let's display the final score
-
-var endQuiz = function() {
-    gameOver = true;
-    questionBody.style.display = "none";
-    initialsInput.value= "";
-    totalPoints = 0;
-    questions.forEach( function(element) {
-        totalPoints += element.points;
-    });
-
-    finalScoreDisplay.style.display = "block";
-    finalScoreValue.innerHTML = "&nbsp;&nbsp;" + score + " / " + totalPoints;
-}

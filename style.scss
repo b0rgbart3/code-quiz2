@@ -172,15 +172,28 @@ button:focus {
 }
 
 .count-down {
-    background-color:rgb(86, 156, 86);
+
     font-family: Arial, Helvetica, sans-serif;
     text-transform: uppercase;
-    color:white;
-    padding:14px;
+    color: black;
+    padding: 14px;
     position: fixed;
-    top:0;
-    right:200px;
-}
+    top: 0;
+    right: 200px; }
+  
+    .time-remaining {
+      
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      color: white;
+      padding: 14px;
+      position: fixed;
+      top: 0;
+      right: 250px;
+      color:black;
+     }
+  
+      
 .form-button {
     font-family: 'Inconsolata', monospace;
     padding:14px;

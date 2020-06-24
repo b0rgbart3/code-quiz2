@@ -148,14 +148,23 @@ button:focus {
   font-weight: 600; }
 
 .count-down {
-  background-color: #569c56;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  color: black;
+  padding: 14px;
+  position: fixed;
+  top: 0;
+  right: 200px; }
+
+.time-remaining {
   font-family: Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   color: white;
   padding: 14px;
   position: fixed;
   top: 0;
-  right: 200px; }
+  right: 250px;
+  color: black; }
 
 .form-button {
   font-family: 'Inconsolata', monospace;
