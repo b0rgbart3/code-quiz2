@@ -148,7 +148,8 @@ button:focus {
   padding: 18px;
   font-weight: 800;
   font-size: 2em;
-  font-family: 'Volkhov', serif; }
+  font-family: 'Volkhov', serif;
+  user-select: none; }
 
 .count-down {
   font-family: Arial, Helvetica, sans-serif;

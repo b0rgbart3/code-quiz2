@@ -35,21 +35,36 @@ incorrectAudio.volume = .3;
 //   points:  a point value to score this question based on it's difficulty level
 
 const questions = [
-    { question: "Commonly used datatypes in JavaScript DO NOT include:",
-     options: ["strings","booleans","alerts","numbers"],
-     correct: 2,
-     points: 5
+    { 
+        question: "Commonly used datatypes in JavaScript DO NOT include:",
+        options: ["strings","booleans","alerts","numbers"],
+        correct: 2,
+        points: 5
     },
-    { question: "Arrays in JavaScript can be used to store:",
+    { 
+        question: "Arrays in JavaScript can be used to store:",
         options: ["numbers and strings","other arrays","booleans","all of the above"],
         correct: 3,
         points: 10
     },
-    { question: "The condition in an if/else statement is enclosed within ______:",
-    options: ["quotes","curly brackets","parenthesis","square brackets"],
-    correct: 2,
-    points: 4
+    { 
+        question: "The condition in an if/else statement is enclosed within ______:",
+        options: ["quotes","curly brackets","parenthesis","square brackets"],
+        correct: 2,
+        points: 4
     },
+    {
+        question: ".forEach() is a ...",
+        options: ["custom function", "array prototype method", "window object", "string literal"],
+        correct: 1,
+        points:15
+    },
+    {
+        question: "jQuery is ...",
+        options: ["native to Javascript", "a Javascript function", "a library", "incompatible with Javascript"],
+        correct: 2,
+        points:10
+    }
 ];
 var timeAllotted = questions.length * 6;  // seconds allotted for entire quiz
 
@@ -57,6 +72,7 @@ var timeAllotted = questions.length * 6;  // seconds allotted for entire quiz
 var startButton =       document.getElementById("start-button");
 var questionBody =      document.getElementById("question-body");
 var questionDiv =       document.getElementById("question-div");
+var questionNumberDisplay = document.getElementById("question-number");
 var optionsDiv =        document.getElementById("options-div");
 var timeRemaining =    document.getElementById("time-remaining");
 var countDownDisplay =  document.getElementById("count-down");
@@ -127,6 +143,8 @@ startButton.onclick = startQuiz;
 
 var displayQuestion = function() {
   
+    questionNumberDisplay.textContent = questionNumber +1;
+    console.log(questionNumber);
     displayQuestionTitle();
     displayQuestionOptions();
 }
@@ -223,9 +241,12 @@ var nextQuestion = function () {
      // give the user back the time that was taken while we paused to
      // display "correct" or "incorrect"
     timer += pauseAmount;   
+    
+   
     correctDisplay.style.display="none";
     incorrectDisplay.style.display="none";
     questionNumber++;
+    
     if ((questionNumber < questions.length) || (timer <= 0)) {
         displayQuestion();
     } else {
@@ -237,15 +258,13 @@ var nextQuestion = function () {
 var updateDisplay = function() {
     countDownDisplay.textContent = timer;  
     scoreDisplay.textContent = score;
-    console.log(timer);
+ 
 }
 
 var endQuiz = function() {
     
-
     clearTimeout(quizTimer);
     clearInterval(countDown);
-    console.log("ended.");
 
     questionBody.style.display = "none";
     displayFinalScore();
