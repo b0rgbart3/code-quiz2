@@ -112,18 +112,25 @@ var restart = function(event) {
     }
     startButton.style.display = "block";
     scoreBox.style.display = "none";
+
+    if (quizTimer) { clearTimeout(quizTimer); }
+    if (countDown) { clearInterval(countDown); }
+    if (pause) { clearTimeout(pause); }
+    
 }
 
 var startQuiz = function() {
+   
     timer = timeAllotted;
     countDownDisplay.textContent = timer;
     
     // update the display every second
-    countDown = setInterval(countDown, 1000);
+    countDown = setInterval(countDownMethod, 1000);
+    console.log("creating the countDownInterval");
 
     // this is the main quizTimer 
     quizTimer = setTimeout( endQuiz, timeAllotted * 1000);
-
+    console.log("Starting the quizTimer..." + timeAllotted);
     // remove the Start Button from the display
     startButton.style.display= "none";
     // reveal the Question Body on the page
@@ -144,13 +151,14 @@ startButton.onclick = startQuiz;
 var displayQuestion = function() {
   
     questionNumberDisplay.textContent = questionNumber +1;
-    console.log(questionNumber);
+  //  console.log(questionNumber);
     displayQuestionTitle();
     displayQuestionOptions();
 }
 
-var countDown = function() {
+var countDownMethod = function() {
     timer--;
+    console.log("Timer: " + timer);
     updateDisplay();
 }
 
@@ -258,13 +266,13 @@ var nextQuestion = function () {
 var updateDisplay = function() {
     countDownDisplay.textContent = timer;  
     scoreDisplay.textContent = score;
- 
+    // console.log('In update: timer ==' + timer);
 }
 
 var endQuiz = function() {
-    
-    clearTimeout(quizTimer);
-    clearInterval(countDown);
+    if (quizTimer) { clearTimeout(quizTimer); }
+    if (countDown) { clearInterval(countDown); }
+    if (pause) { clearTimeout(pause); }
 
     questionBody.style.display = "none";
     displayFinalScore();
