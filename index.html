@@ -15,7 +15,8 @@
     <div id='count-down' class='count-down'>&nbsp;</div>
     <div id='start-button' class='start-button'>Start the Quiz</div>
 
-    <article class='question-body' id='question-body'>
+    
+    <div class='question-body' id='question-body'>
         <div class='question-number' id='question-number'>1</div>
         <div id='question-div' class='stretch-center'></div>
         <div id='options-div' class='stretch-center'></div>
@@ -23,12 +24,12 @@
         
         <div class='display-answer correct-display' id='correct-display'>Correct</div>
         <div class='display-answer incorrect-display' id='incorrect-display'>Incorrect</div>
-    </article>
+    </div>
 
     <div id='final-score' class='final-score'>
         <p class='score-title'>Your Final Score:&nbsp;<span id='final-score-value' class='final-score-value'> &nbsp; 0000</span></p>
         <p>If you'd like to save this score, please enter your initials here:</p>
-        <form><input type='text'  maxlength="3" id='initials'></input><br>
+        <form><input type='text'  maxlength="3" id='initials' /><br>
             <button class='form-button save' id='save-button'>Save My Score</button>
             <button class='form-button' id='dont-save-button'>Don't Save My Score</button>
             <button class='form-button' id='high-score-button'>View Existing High Scores</button>
@@ -45,7 +46,7 @@
         <button class='form-button save' id='play-again-button'>Play Again</button>
         <button class='form-button' id='clear-high-scores'>Clear High Scores</button>
     </div>
-    
+    <script src="./script.js"></script>
 </body>
-<script src="./script.js"></script>
+
 </html>
